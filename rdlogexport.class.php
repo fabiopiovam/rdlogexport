@@ -8,12 +8,12 @@ class RDLogExport {
     private $_conn;
 
     function __construct() {
-        $this -> _conn = $this -> _connect();
-        $this -> origin = 'path_origin';
-        $this -> destination = 'path_destination';
-        $this -> format = 'mp3';
+        $this->_conn = $this->_connect();
+        $this->origin = 'path_origin';
+        $this->destination = 'path_destination';
+        $this->format = 'mp3';
 
-        $this -> files = $this -> list_files();
+        $this->files = $this->list_files();
     }
 
     private function _connect() {
@@ -27,11 +27,11 @@ class RDLogExport {
     }
 
     public function list_files() {
-        $dir = opendir($this -> origin);
+        $dir = opendir($this->origin);
         $files = array();
 
         while ($nome_itens = readdir($dir)) {
-            if (in_array($nome_itens, array('.', '..')) || !preg_match('/\.' . $this -> format . '$/i', $nome_itens))
+            if (in_array($nome_itens, array('.', '..')) || !preg_match('/\.' . $this->format . '$/i', $nome_itens))
                 continue;
             $files[] = $nome_itens;
         }
@@ -42,24 +42,24 @@ class RDLogExport {
     public function export_files() {
 
         $sql = "SELECT NUMBER, GROUP_NAME, ARTIST, TITLE FROM CART ORDER BY GROUP_NAME, ARTIST";
-        $rs = mysql_query($sql, $this -> _conn);
+        $rs = mysql_query($sql, $this->_conn);
         $total = mysql_num_rows($rs);
         $count = 0;
         while ($row = mysql_fetch_assoc($rs)) {
             $count++;
             $percent = intval(($count * 100) / $total);
-            $file_name = array_values(array_filter($this -> files, function($value) use ($row) {
+            $file_name = array_values(array_filter($this->files, function($value) use ($row) {
                 return (preg_match('/' . $row['NUMBER'] . '/i', $value) == 1);
             }));
 
-            if (($file_name = $file_name[0]) && file_exists($this -> origin . '/' . $file_name)) {
-                $dir = $this -> destination . $this -> strip_accents(utf8_encode(strtolower("/{$row['GROUP_NAME']}/{$row['ARTIST']}")));
+            if (($file_name = $file_name[0]) && file_exists($this->origin . '/' . $file_name)) {
+                $dir = $this->destination . $this->strip_accents(utf8_encode(strtolower("/{$row['GROUP_NAME']}/{$row['ARTIST']}")));
                 if ((!is_dir($dir)))
                     mkdir($dir, 0777, true);
 
-                $new_file = $this -> strip_accents(utf8_encode("$dir/{$row['ARTIST']}-{$row['TITLE']}.{$this->format}"));
+                $new_file = $this->strip_accents(utf8_encode("$dir/{$row['ARTIST']}-{$row['TITLE']}.{$this->format}"));
                 echo "$percent% - copiando $new_file";
-                if (copy($this -> origin . '/' . $file_name, $new_file)) {
+                if (copy($this->origin . '/' . $file_name, $new_file)) {
                     echo " OK \n";
                 } else {
                     echo " FAIL! \n";
