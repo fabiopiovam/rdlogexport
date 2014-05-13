@@ -15,11 +15,13 @@ PHP 5.3 >=
 
 Alter the rdlogexport.class.php
 
-    $this->origin = 'path_origin';
-    $this->destination = 'path_destination';
-    $this->format = 'mp3';
-    ...
-    $link = mysql_connect('localhost', 'root', '***');
+```php
+$this->origin = 'path_origin';
+$this->destination = 'path_destination';
+$this->format = 'mp3';
+...
+$link = mysql_connect('localhost', 'root', '***');
+```
 
 ### Executing
-    #php rdlogexport.php
+    # php rdlogexport.php
