@@ -13,7 +13,7 @@ PHP 5.3 >=
 
 ### Preparing to execution
 
-Alter the rdlogexport.class.php
+Alter the `rdlogexport.class.php`
 
 ```php
 $this->origin = 'path_origin';
@@ -24,4 +24,4 @@ $link = mysql_connect('localhost', 'root', '***');
 ```
 
 ### Executing
-    `# php rdlogexport.php`
+    # php rdlogexport.php
