@@ -24,4 +24,4 @@ $link = mysql_connect('localhost', 'root', '***');
 ```
 
 ### Executing
-    # php rdlogexport.php
+    `# php rdlogexport.php`
